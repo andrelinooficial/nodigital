@@ -34,6 +34,24 @@
         </nav>
     </header>
 
+<!--BOTÃO INSTALAR APP-->
+
+<button id="installBtn" style="
+  display:none;
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#0a84ff;
+  color:white;
+  border:none;
+  padding:12px 20px;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+">
+  Instalar app
+</button>
+    
+
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-background">
@@ -276,6 +294,25 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log("Erro ao registrar Service Worker:", err));
   });
 }
+</script>
+
+<script>
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById("installBtn").style.display = "block";
+});
+
+document.getElementById("installBtn").addEventListener("click", async () => {
+  const installBtn = document.getElementById("installBtn");
+  installBtn.style.display = "none";
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  console.log(`Instalação: ${outcome}`);
+  deferredPrompt = null;
+});
 </script>
 
 </body>
